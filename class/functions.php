@@ -63,21 +63,22 @@ class crud {
             $id= $_GET['id'];
             $sql= "SELECT t.id,t.task,t.status,t.created_on  FROM `task` as t LEFT JOIN `user` as u ON t.user_id=u.id WHERE u.email='$email' AND t.id='$id'";
             $result = $this->db->query($sql);
-            while($row = mysqli_fetch_array($result)){
-            $resp= array( "task"=> $row['task'],
-                            "status"=> $row['status'],
-                            "date"=> $row['created_on']);
+            if($row = mysqli_fetch_array($result)){
+                $response['task']=$row['task'];
+                $response['status']=$row['status'];
+                $response['date']=$row['created_on'];
             }
-            echo json_encode($resp);
+            echo json_encode($response,JSON_PRETTY_PRINT);
         }else{
         $sql= "SELECT t.id,t.task,t.status,t.created_on  FROM `task` as t LEFT JOIN `user` as u ON t.user_id=u.id WHERE u.email='$email'";
         $result = $this->db->query($sql);
         $idd = 1;
         while($row = mysqli_fetch_array($result)){
-          $resp= array("id"=> $idd++,
-                            "task"=> $row['task'],
-                            "status"=> $row['status'],
-                            "date"=> $row['created_on']);
+          $resp[]= array("id"=> $idd++,
+                        "task"=> $row['task'],
+                        "status"=> $row['status'],
+                        "date"=> $row['created_on']);
+        
         }
         echo json_encode($resp);
         }
