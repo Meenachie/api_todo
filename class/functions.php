@@ -8,7 +8,7 @@ class user {
     }
 
     public function signup(){
-        $data = json_decode(file_get_contents('php://input'), true);
+        $data = json_decode(file_get_contents('php://input'), true); //Retrieve JSON data from the request body
         $name = $data['name'];
         $email = $data['email'];
         $password = $data['password'];
@@ -19,7 +19,7 @@ class user {
         if($preparestmt){
             mysqli_stmt_bind_param($stmt,"sss",$name,$email,$hash);
             mysqli_stmt_execute($stmt);
-            echo json_encode(['message' => 'data inserted successfully']);
+            echo json_encode(['message' => 'data inserted successfully']); //Respond with a JSON-encoded result
         }else{
             echo json_encode(['message' => 'Something went wrong']);
         }
